@@ -1,0 +1,45 @@
+<!--Some basic functions that add interactivity to webpages using JQuery. 
+    These functions are all purely client-side, with no server-side interaction at all (not even HTML forms). -->
+
+<head>
+    <!-- Load jQuery CDN. -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    </head>
+<body>
+<div>
+<h3>EXAMPLE 1. Call a method .ready of the object $.</h3>
+<p>The variable passed to ready() is actually a snippet of code. This method only executes the code in ready() when the document is ready and loaded. 
+    You will know this work because a pop-up launched when you opened this webpage.
+</p>
+<script>
+    $(document).ready(function(){
+        alert('Hello there! The jQuery ready() function executed, and I am ready to start working.')
+    });
+    </script>
+</div>
+<div>
+    <h3>EXAMPLE 2. Toggle the visibility of an image.</h3>
+    <p>This uses a button to interactively show and hide an image. It uses the "display" attribute in HTML/CSS, which hides an image if set to none. 
+        </p>
+    <p>
+        <!-- In this case, you have a long sequence of JS code built right into the onclick attribute. That is OK! But it would look cleaner to move it to a script. -->
+        <a href="#" onclick="
+                                // This toggles the image, which manipulates the display attribute. This happens first.
+                                $('#image').toggle();
+                                
+                                // Then use jQuery to check if the image is toggled visible. If it's now visible, the message is to Hide it, and vice versa. 
+                                if ($('#image').is(':visible')) { 
+                                    document.getElementById('words').innerHTML='Hide Image';
+                                    } else {
+                                        document.getElementById('words').innerHTML='Show Image';
+                                    };
+                                
+                                return false;">
+            <span id="words">Hide Image</span></a> </p>
+    <p>
+        <img id = "image" src="_files/alien.png" style= "vertical-align:middle; display=none";>
+        </p>
+
+    </div>
+    
+</body>

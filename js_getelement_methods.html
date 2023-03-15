@@ -6,7 +6,7 @@
 
 -->
 
-<h1>EXAMPLE 1: Very basic example of modifying HTML content.</h1> 
+<h2>EXAMPLE 1: Very basic example of modifying HTML content using elementbyID.</h2> 
 <p>This snippet dynamically replaces content inside a specific HTML tag, without going to the server.
     </p>
 
@@ -22,3 +22,47 @@
 <h3> 
     Hello <b><span id="stuff">Boring</span></b>. 
 </h3> 
+
+<h2>EXAMPLE 2: Dynamically add elements to an HTML unordered list</h2>
+<!-- This example shows how you build a dynamic JS script to dynamically add elements to an unordered list. 
+        These are added using only server-side algorithms occurring within the browser.  -->
+
+<p> 
+
+    <!-- This just calls the JS function. -->
+    <a href="#" onclick="add(); return false;">More</a> 
+    </p> 
+    <ul id="the-list"> 
+        <li>First Item</li> <!-- Initially, one appears automatically.-->
+
+    </ul> 
+
+    <script> 
+
+        // Start the JavaScript that adds a line to the browser. 
+        counter = 1; 
+        
+        // Add to the console log the entirety of the HTML in the unordered list.
+        Console.log(document.getElementById('the-list'))  
+        
+        // Define the function called by the HTML element. 
+        function add() { 
+        
+            // This creates a local variable that is an object which creates an element.  
+            // You must call methods in the object to actually create anything, though. 
+            var x = document.createElement('li');      
+            
+            // This assigns a class name and the inner HTML content.  
+            x.className = "list-item"; 
+            x.innerHTML = "The counter is " + counter; 
+            
+            // This finally actually appends to the DOM. 
+            // It inserts a child element to the unordered list with ID 'the-list' 
+            document.getElementById('the-list').appendChild(x); 
+              
+            // And does an auto-increment. 
+            counter++; 
+    
+        } 
+    
+    </script> 
