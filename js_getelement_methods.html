@@ -1,0 +1,24 @@
+<!--
+
+    This file contains some JavaScript embedded in an HTML file. This includes examples of "getelementby...methods. 
+    Current exampels:"
+    getElementById
+
+-->
+
+<h1>EXAMPLE 1: Very basic example of modifying HTML content.</h1> 
+<p>This snippet dynamically replaces content inside a specific HTML tag, without going to the server.
+    </p>
+
+    <!--  This replaces the inner HTML content in element with ID = 'stuff' with 'BACK'. --> 
+<p>
+    <a href="#" onclick="document.getElementById('stuff').innerHTML='BACK'; return false";> 
+        Say "Back"!</a> 
+</p>
+<p>
+    <a href="#" onclick="document.getElementById('stuff').innerHTML='FORTH'; return false";>  
+        Say "Forth!"</a> 
+</p>
+<h3> 
+    Hello <b><span id="stuff">Boring</span></b>. 
+</h3> 
