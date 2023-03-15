@@ -1,0 +1,31 @@
+<!-- templates/jquery_post.html -->
+
+<!DOCTYPE html>
+
+{% extends "base.html" %}
+{% block content %}
+
+    <form id="target">
+        <input type="text" name="one" value="Hello there"
+            style="vertical-align: middle;" >
+        <img id="gear" src="{{ url_for('static',filename='gear.gif') }}" height="25"
+        style="vertical-align: middle; display: none;">
+    </form>
+
+    <!-- Empty DIV where the output will go. -->
+    <div id="result></div>
+
+    <h1>{{ python_data['output_string'] }}</h1>
+
+
+</div>
+
+<!-- TODO : Finish this example. You have the code you need in your OneNote. -->
+    <script type="text/javascript">
+        $('#target').change(function(event)) {
+            $('s')
+        }
+
+{% endblock %}
+
+</html>

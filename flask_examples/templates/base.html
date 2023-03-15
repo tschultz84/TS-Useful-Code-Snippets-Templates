@@ -1,0 +1,28 @@
+<!-- templates/base.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head><title>Base Page</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+</head>
+<body>
+
+    <div id="header"><h2>JavaScript Examples - JQuery</h2></div>
+
+    <div id = "contentblock">
+
+        <!-- In the following, data is loaded from the templates which have the uniform header and footer. -->
+        {% block content %}
+
+        {% endblock %}
+
+        </div>
+
+    <div id="footer"><p>2023 by Tobias Schultz</p></div>
+
+</body>
+
+
+
+</html>

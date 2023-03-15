@@ -1,0 +1,14 @@
+<!-- templates/base.html -->
+
+<!DOCTYPE html>
+
+{% extends "base.html" %}
+{% block content %}
+
+    <h1>{{ python_data['output_string'] }}</h1>
+
+    <p><a href=" {{ url_for('main.jquery_post') }}">Review Example of JQuery HTML Post</a>  </p>
+
+{% endblock %}
+
+</html>
