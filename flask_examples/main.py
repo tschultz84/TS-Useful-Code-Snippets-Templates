@@ -32,7 +32,7 @@ def jquery_post():
         python_data['output_string'] = 'You posted an HTML variable:' + value
     else: python_data['output_string'] = "You haven't yet posted an HTML variable."
 
-    # Pause for 5 seconds. This is helpful in the example, but not necessary. Delete in production.  
-    time.sleep(5)
+    # Pause. This is helpful in the example, but not necessary. Delete in production.  
+    time.sleep(2)
 
     return render_template('jquery_post.html',python_data=python_data)

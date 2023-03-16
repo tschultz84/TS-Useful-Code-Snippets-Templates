@@ -12,20 +12,71 @@
         style="vertical-align: middle; display: none;">
     </form>
 
-    <!-- Empty DIV where the output will go. -->
-    <div id="result></div>
+    <a href="#" onclick="document.getElementById('result').innerHTML='Hello World!'; return false;">Add text here</a>
+
+    <!-- This is the empty DIV where the output will go. -->
+    <div id="result"></div>
 
     <h1>{{ python_data['output_string'] }}</h1>
 
 
 </div>
 
-<!-- TODO : Finish this example. You have the code you need in your OneNote. -->
-    <script type="text/javascript">
-        $('#target').change(function(event)) {
-            $('s')
-        }
+<!-- Here starts the JavaScript. Some important notes:
+    The JS Code has to appear within the block, or it won't load.
+    -->
+<script type="text/javascript">
+    window.console && console.log('Starting the JS script!');
+
+    // On change in the form with id target, execute the function given as an argument to .change().
+    $('#target').change(function(event) {
+
+        // Retrieve the file location.
+        var scripts = document.getElementsByTagName("script"),
+        src = scripts[scripts.length-1].src;
+
+        window.console && console.log('Initiating function on HTML form change inside the page '+ src);
+
+        $('gear').show();
+        
+        // Create an object of the HTML form. 
+        var form = $('#target');
+
+        // Retrieve the value from the input with name of one inside the form object.
+        var txt = form.find('input[name="one"]').val();
+
+        // Log your progress.
+        window.console && console.log('Sending POST to the file ' + '~/main.py');
+
+        /* Now execute the POST! Note the following documentation is useful
+                https://api.jquery.com/jQuery.post/
+            This code is equivalent to $.ajax( ... ), and so this webpage is useful. Note that the URL maps to a route decorator for a particular funciton in Python, not a URL.
+                https://towardsdatascience.com/using-python-flask-and-ajax-to-pass-information-between-the-client-and-server-90670c64d688
+        
+        */
+        <!-- TODO: This works, but not as expected, passing what appears to be the entire DOM. -->
+        // Start the POST.
+        $.post('/jquery_post' ,  //Send it to the relevant route decorator. 
+            {'value':txt} , // The HTML post variable will be called "value" (the main.py jquery_post method looks for this variable)
+            function( data ) 
+            { // Pass a function when the post is made!
+                window.console && console.log('Here is the data being POSTED: ' + data);
+                $('#result').empty().append(data); // Empty out this DIV, then load in the data.
+                $('#gear').hide(); // Hide the image when the work is done.
+            }).error(function()
+            {
+                $('#target').css('background-color','red');
+                window.console && console.log('Error in executing the $.post function.');
+            });
+
+    });    
+    
+    </script>
 
 {% endblock %}
 
+
+
+
 </html>
+
