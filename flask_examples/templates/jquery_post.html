@@ -24,6 +24,7 @@
 
 <!-- Here starts the JavaScript. Some important notes:
     The JS Code has to appear within the block, or it won't load.
+    This will return a POST to the function, but do nothing more - it wont even reload the page. 
     -->
 <script type="text/javascript">
     window.console && console.log('Starting the JS script!');
@@ -54,20 +55,11 @@
                 https://towardsdatascience.com/using-python-flask-and-ajax-to-pass-information-between-the-client-and-server-90670c64d688
         
         */
-        <!-- TODO: This works, but not as expected, passing what appears to be the entire DOM. -->
+        
         // Start the POST.
         $.post('/jquery_post' ,  //Send it to the relevant route decorator. 
-            {'value':txt} , // The HTML post variable will be called "value" (the main.py jquery_post method looks for this variable)
-            function( data ) 
-            { // Pass a function when the post is made!
-                window.console && console.log('Here is the data being POSTED: ' + data);
-                $('#result').empty().append(data); // Empty out this DIV, then load in the data.
-                $('#gear').hide(); // Hide the image when the work is done.
-            }).error(function()
-            {
-                $('#target').css('background-color','red');
-                window.console && console.log('Error in executing the $.post function.');
-            });
+            {'value':txt}  // The HTML post variable will be called "value" (the main.py jquery_post method looks for this variable)
+            );
 
     });    
     

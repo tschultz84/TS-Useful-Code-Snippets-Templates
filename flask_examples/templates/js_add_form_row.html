@@ -1,0 +1,62 @@
+<!-- templates/js_add_form_row.html -->
+
+<!DOCTYPE html>
+
+{% extends "base.html" %}
+{% block content %}
+
+    <h1>Add a Row to this Form and Submit it</h1>
+
+    <h2 id ="formheader">Text Input</h2>
+    <form >
+        <table id ="formtable">
+            <tr>
+                <th>First Name</th>
+                <th>Last name</th>
+                <th>City of Residence</th>
+            </tr>
+            <tr id="formrow">
+                <td><input type="text" id="fname" name="fname" value="John"></td>
+                <td><input type="text" id="lname" name="lname" value="Doe"></td>
+                <td><input type="text" id="city" name="city" value="Bozeman"></td>
+            </tr>
+        
+            <tr><td>
+                
+
+            </td>
+        
+            <td></td>
+        
+            <td></td></tr>
+        </table>
+        <input type="submit" value="Submit">
+        </form>
+
+        <a href="#" onclick="addRow()">Add new Row</a>
+    
+
+    <p>{{ python_data['output_string'] }}</p>
+    <p>{{ python_data['out_dict'] }}</p>
+
+    <script type="text/javascript">
+        function addRow() {
+            
+            window.console && console.log('Trying to add new row.');
+
+            // This creates a cloned copy of the last row of data.
+            var newrow = $( '#formrow' ).clone(true);
+
+            // And appends it to the last element in the form. 
+            $( '#formtable' ).append( newrow) ;
+
+            // TODO: Make the ids reset so you can retrieve more data. 
+            return false;
+
+        }
+
+    </script>
+
+{% endblock %}
+
+</html>
