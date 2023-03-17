@@ -1,4 +1,5 @@
 <!-- templates/js_add_form_row.html -->
+<!-- This is a basic example of how to add a form row.-->
 
 <!DOCTYPE html>
 
@@ -13,17 +14,16 @@
             <tr>
                 <th>First Name</th>
                 <th>Last name</th>
-                <th>City of Residence</th>
+                <th>City of Residence</th><th></th>
             </tr>
             <tr id="formrow">
-                <td><input type="text" id="fname" name="fname" value="John"></td>
-                <td><input type="text" id="lname" name="lname" value="Doe"></td>
-                <td><input type="text" id="city" name="city" value="Bozeman"></td>
+                <td><input type="text" name="fname" value="John"></td>
+                <td><input type="text" name="lname" value="Doe"></td>
+                <td><input type="text" name="city" value="Bozeman"></td><td></td>
             </tr>
         
             <tr><td>
                 
-
             </td>
         
             <td></td>
@@ -33,8 +33,16 @@
         <input type="submit" value="Submit">
         </form>
 
-        <a href="#" onclick="addRow()">Add new Row</a>
+        <script type="text/javascript">
+            // This just initializes the counter for add new rows. 
+            counter=1;</script>
+
+        <a href="#" onclick="
+                 // This counter labels the output.
+                
+                addRow()">Add new Row</a>
     
+        <p id="alertbar"></p>
 
     <p>{{ python_data['output_string'] }}</p>
     <p>{{ python_data['out_dict'] }}</p>
@@ -42,16 +50,46 @@
     <script type="text/javascript">
         function addRow() {
             
-            window.console && console.log('Trying to add new row.');
+            // Set max number of rows you can add.
+            var max = 5;
 
-            // This creates a cloned copy of the last row of data.
-            var newrow = $( '#formrow' ).clone(true);
+            window.console && console.log('Trying to add new row. This is row #'+counter+ ' being added.');
 
-            // And appends it to the last element in the form. 
-            $( '#formtable' ).append( newrow) ;
+            // TODO: Make this work as a clone of the form. This would minimize the work required if you add fields. 
 
-            // TODO: Make the ids reset so you can retrieve more data. 
+            // Max out the number of rows you can add.
+            if (counter < max) {
+                // Create the new row.
+                var newrow = '<tr id="row-' + counter +'"><td><input type="text" name="fname-' + counter +'" value="Insert"></td>' +
+                                '<td><input type="text" name="lname-' + counter +'" value="Insert"></td>' +
+                                '<td><input type="text" name="city-' + counter +'" value="Insert"></td>'+
+                                '</tr>'
+
+                // And appends it to the last element in the form. 
+                $( '#formtable' ).append( newrow) ;
+
+                window.console && console.log('New row added. Adding delete function reference.');
+
+                // This now adds the delete function reference in the last cell. 
+                deletefunction='<td><a href="#" onclick="deleterow(\'row-' + counter + '\')">Delete</a></td>' 
+                $('#row-' + counter ).append(deletefunction)
+
+                window.console && console.log('Added delete function reference.');
+
+            // If you exceed the maximum number of allowed rows. 
+            } else {
+                $('#alertbar').append("You can only add " + max + 'rows.')
+            };
+
+            counter = counter + 1;
+
             return false;
+        }
+
+        // This function takes an id, deletes the element, and then deducts the counter. 
+        function deleterow(id){
+            $('#'+id).remove();
+            counter = counter -1 ;
 
         }
 
