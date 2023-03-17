@@ -1,0 +1,111 @@
+<!-- templates/jquery_crud.html -->
+<!-- This is an example of a Python Flask / JS application which can create, read, update, and edit entries in tabular data format
+    It does all its reading and writing from a tabular CSV file containing a list of recipes; I did this to include in this template
+    the simplest possible tabular data read-in. 
+
+    I leave it to the user to translate this to SQL or whatever other tabular data format you actually use in your application. 
+    .-->
+
+<!DOCTYPE html>
+
+{% extends "base.html" %}
+{% block content %}
+
+    <h1>Basic Create, Read, Update, Edit, Application in Flask / JavaScript</h1>
+    <p>Built using JQuery</p>
+    <p>{{ python_data['output_string'] }}</p>
+
+    <!-- TABLE CONSTRUCTION-->
+    <table id='table'>
+        <!-- HEADING FORMATION -->
+        <tr>
+            <th>Record ID</th>
+            <th>Recipe Title</th>
+            <th>Description</th>
+            <th>Author</th>
+            <th>Category</th>
+            <th>Cuisine</th>
+            <th>Serving Size</th>
+            <th>Cook Time</th>
+            <th>Prep Time</th>
+            <th>Notes</th>
+            <th>Tags</th>
+            <th>Ingredients</th>
+            <th>Directions</th>
+            
+        </tr>
+
+    </table>
+        
+
+    <script type="text/javascript">
+        
+        // Execute this once the document is fully loaded.
+        $(document).ready(function () {
+  
+            window.console && console.log('About to launch getJSON function.')
+
+            // FETCHING DATA FROM JSON FILE
+            $.getJSON('/jquery_crud', 
+                    function (data) {
+
+                        window.console && console.log('JSON retrieved: ' + data);
+
+                        var reciperow = '';
+
+                        // ITERATING THROUGH OBJECTS
+                        $.each(data, function (key, value) {
+
+                            //CONSTRUCTION OF ROWS HAVING
+                            // DATA FROM JSON OBJECT
+                            reciperow += '<tr>';
+                            reciperow += '<td>' + 
+                                value.record_id + '</td>';
+
+                            reciperow += '<td>' + 
+                                value.recipe_title + '</td>';
+
+                            reciperow += '<td>' + 
+                                value.recipe_description + '</td>';
+
+                            reciperow += '<td>' + 
+                                value.recipe_author + '</td>';
+
+                            reciperow += '<td>' + 
+                                value.recipe_cuisine + '</td>';
+
+                            reciperow += '<td>' + 
+                                value.serving_size + '</td>';
+
+                            reciperow += '<td>' + 
+                                value.cook_time + '</td>';
+
+                            reciperow += '<td>' + 
+                                value.prep_time + '</td>';
+
+                            reciperow += '<td>' + 
+                                value.recipe_note + '</td>';
+
+                            reciperow += '<td>' + 
+                                value.recipe_tags + '</td>';
+
+                            reciperow += '<td>' + 
+                                value.recipe_ingredients + '</td>';
+
+                            reciperow += '<td>' + 
+                                value.recipe_directions + '</td>';
+
+                            reciperow += '</tr>';
+                        });
+                            
+                        //INSERTING ROWS INTO TABLE 
+                        $('#table').append(student);
+                    });
+                });
+        
+
+    </script>
+
+{% endblock %}
+
+</html>
