@@ -49,65 +49,64 @@
             // PARSING DATA FROM JSON 
             var jsondata = JSON.parse( {{ python_data['json_out']|tojson|safe }} );
 
-            window.console && console.log( 'I used JSON.parse to load data, which looks like: ' + jsondata );
+            window.console && console.log( 'I used JSON.parse to load data, which looks like: ' + JSON.stringify(jsondata) );
+
+            var columncount = 0 ;
+            var itemlength = -1;
+            var arraydims = Array();
+
+            // This code documents the shape of your array. 
+            $.each(jsondata ,function(key, value){
+
+                // Looping over each column, increment.
+                columncount += 1;
+
+                // Reset the counter for the number of rows.
+                itemlength = 0;
+
+                // Now count over every value. 
+                $.each(value , function(){
+                    itemlength += 1;
+                });
+
+                // Add the row length to the shape array. 
+                arraydims.push(itemlength);
+            });
+
+            window.console && console.log( 'It has ' + columncount + ' columns.' );
+            window.console && console.log( 'The last column had ' + itemlength + ' entries.' );
+            window.console && console.log( 'The dimensions are ' + arraydims.toString() );
+
+            //var tabledata = jQuery.makeArray(jsondata);
+
+            //window.console && console.log( 'I transformed it into an array, which looks like: ' + tabledata.toString() );
             
             // ITERATING THROUGH OBJECTS
             // TODO: This does not yet correctly loop throuhg objects - it loops over each column, not each row. 
-            var reciperow = '';
-            var counter = 1
+            var recipe_row_string = '';
+            var length_test = -1
+            var counter = 0;
 
+            // This flag is set to FALSE if there is any fatal error requiring a halt to the table build.
+            var continuer = true;
             
-            $.each(jsondata, function (key, value) {
-
-                window.console && console.log('Creating row #' + counter ); 
-                window.console && console.log('Key: ' + key ); 
-                window.console && console.log('Value: ' + value ); 
-                //CONSTRUCTION OF ROWS HAVING
-                // DATA FROM JSON OBJECT
-                reciperow += '<tr>';
-                reciperow += '<td>' + 
-                    value.record_id + '</td>';
-
-                reciperow += '<td>' + 
-                    value.recipe_title + '</td>';
-
-                reciperow += '<td>' + 
-                    value.recipe_description + '</td>';
-
-                reciperow += '<td>' + 
-                    value.recipe_author + '</td>';
-
-                reciperow += '<td>' + 
-                    value.recipe_cuisine + '</td>';
-
-                reciperow += '<td>' + 
-                    value.serving_size + '</td>';
-
-                reciperow += '<td>' + 
-                    value.cook_time + '</td>';
-
-                reciperow += '<td>' + 
-                    value.prep_time + '</td>';
-
-                reciperow += '<td>' + 
-                    value.recipe_note + '</td>';
-
-                reciperow += '<td>' + 
-                    value.recipe_tags + '</td>';
-
-                reciperow += '<td>' + 
-                    value.recipe_ingredients + '</td>';
-
-                reciperow += '<td>' + 
-                    value.recipe_directions + '</td>';
-
-                reciperow += '</tr>';
-
-
-                //INSERTING ROWS INTO TABLE 
-                $('#table').append(reciperow);
+            // This executes the loop function.
+            $.each(jsondata, function (key, rowdata) {
                 
+                
+
+                if (continuer == true){
+                    //INSERTING ROWS INTO TABLE 
+                    window.console && console.log('Adding ' + recipe_row_string + ' to table.');
+                    $('#table').append(recipe_row_string);
+                    
+                    } else {
+                        $('#table').remove;
+                        window.console && console.log('Table removed due to mismatch in column lengths. Check your table import is correctly formatted.');
+                        return false;
+                    }
                 counter= counter+1
+                
             });
                 
         });
