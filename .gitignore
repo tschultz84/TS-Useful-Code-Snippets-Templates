@@ -1,2 +1,2 @@
-flask_examples/.venv/
-flask_examples/.venv
+.venv/
+/.venv

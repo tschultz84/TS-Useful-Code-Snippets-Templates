@@ -79,7 +79,9 @@ def jquery_crud():
     tabular_json = tabular_df.to_json()
 
     # Serialize into JSON.
-    python_data['json_out'] = json.dumps(tabular_json)
+    python_data['json_out'] = tabular_json
+    python_data['output_string'] += f"""\nThe type of JSON is : {type(tabular_json)}"""
+
 
     # Pull the data.
     valuedict = request.args

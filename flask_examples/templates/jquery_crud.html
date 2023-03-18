@@ -13,7 +13,8 @@
 
     <h1>Basic Create, Read, Update, Edit, Application in Flask / JavaScript</h1>
     <p>Built using JQuery</p>
-    <p>{{ python_data['output_string'] }}</p>
+    <p>Output string: {{ python_data['output_string'] }}</p>
+    <p>JSON output is as follows: {{ python_data['json_out']|tojson|safe }}</p>
 
     <!-- TABLE CONSTRUCTION-->
     <table id='table'>
@@ -43,66 +44,78 @@
         // Execute this once the document is fully loaded.
         $(document).ready(function () {
   
-            window.console && console.log('About to launch getJSON function.')
+            window.console && console.log('Launching table build.')
 
-            // FETCHING DATA FROM JSON FILE
-            $.getJSON('/jquery_crud', 
-                    function (data) {
+            // PARSING DATA FROM JSON 
+            var jsondata = JSON.parse( {{ python_data['json_out']|tojson|safe }} );
 
-                        window.console && console.log('JSON retrieved: ' + data);
+            window.console && console.log( 'I used JSON.parse to load data, which looks like: ' + jsondata );
+            
+            // ITERATING THROUGH OBJECTS
+            // TODO: This does not yet correctly loop throuhg objects - it loops over each column, not each row. 
+            var reciperow = '';
+            var counter = 1
 
-                        var reciperow = '';
+            
+            $.each(jsondata, function (key, value) {
 
-                        // ITERATING THROUGH OBJECTS
-                        $.each(data, function (key, value) {
+                window.console && console.log('Creating row #' + counter ); 
+                window.console && console.log('Key: ' + key ); 
+                window.console && console.log('Value: ' + value ); 
+                //CONSTRUCTION OF ROWS HAVING
+                // DATA FROM JSON OBJECT
+                reciperow += '<tr>';
+                reciperow += '<td>' + 
+                    value.record_id + '</td>';
 
-                            //CONSTRUCTION OF ROWS HAVING
-                            // DATA FROM JSON OBJECT
-                            reciperow += '<tr>';
-                            reciperow += '<td>' + 
-                                value.record_id + '</td>';
+                reciperow += '<td>' + 
+                    value.recipe_title + '</td>';
 
-                            reciperow += '<td>' + 
-                                value.recipe_title + '</td>';
+                reciperow += '<td>' + 
+                    value.recipe_description + '</td>';
 
-                            reciperow += '<td>' + 
-                                value.recipe_description + '</td>';
+                reciperow += '<td>' + 
+                    value.recipe_author + '</td>';
 
-                            reciperow += '<td>' + 
-                                value.recipe_author + '</td>';
+                reciperow += '<td>' + 
+                    value.recipe_cuisine + '</td>';
 
-                            reciperow += '<td>' + 
-                                value.recipe_cuisine + '</td>';
+                reciperow += '<td>' + 
+                    value.serving_size + '</td>';
 
-                            reciperow += '<td>' + 
-                                value.serving_size + '</td>';
+                reciperow += '<td>' + 
+                    value.cook_time + '</td>';
 
-                            reciperow += '<td>' + 
-                                value.cook_time + '</td>';
+                reciperow += '<td>' + 
+                    value.prep_time + '</td>';
 
-                            reciperow += '<td>' + 
-                                value.prep_time + '</td>';
+                reciperow += '<td>' + 
+                    value.recipe_note + '</td>';
 
-                            reciperow += '<td>' + 
-                                value.recipe_note + '</td>';
+                reciperow += '<td>' + 
+                    value.recipe_tags + '</td>';
 
-                            reciperow += '<td>' + 
-                                value.recipe_tags + '</td>';
+                reciperow += '<td>' + 
+                    value.recipe_ingredients + '</td>';
 
-                            reciperow += '<td>' + 
-                                value.recipe_ingredients + '</td>';
+                reciperow += '<td>' + 
+                    value.recipe_directions + '</td>';
 
-                            reciperow += '<td>' + 
-                                value.recipe_directions + '</td>';
+                reciperow += '</tr>';
 
-                            reciperow += '</tr>';
-                        });
-                            
-                        //INSERTING ROWS INTO TABLE 
-                        $('#table').append(student);
-                    });
-                });
+
+                //INSERTING ROWS INTO TABLE 
+                $('#table').append(reciperow);
+                
+                counter= counter+1
+            });
+                
+        });
+             
+                
         
+                        
+                   
 
     </script>
 
