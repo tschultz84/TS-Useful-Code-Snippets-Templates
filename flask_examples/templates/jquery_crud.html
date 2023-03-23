@@ -22,9 +22,13 @@
         
 
     </table>
+    <!-- Alerts appear here, populated from Javascript. -->
+    <p id="alertbar"></p>
         
 
     <script type="text/javascript">
+
+        
         
         // Execute this once the document is fully loaded.
         $(document).ready(function () {
@@ -44,79 +48,130 @@
             // THis index was defined in your pandas dataframe in main.py
             var header_row_str='<tr><th>Index</th>';
 
-            // And the empty string and array containing the Row data. 
-            var row_str = '';
-            var row_array = [];
+            // Initialize the arrays which will list the keys and indices. 
+            keylist = Array();
+            var indexlist = Array();
 
-            // This code documents the shape of your array. 
-            // TODO: Add this function to a separate package of useful JS functions
+            // Find all the keys, and then all the indices. 
+            // You will define the header row at the same tim eyou find the keys. 
             $.each(jsondata ,function(key, value){
 
-                // Looping over each column, increment.
-                columncount += 1;
-
-                // Reset the counter for the number of rows.
-                itemlength = 0;
-
-                window.console && console.log('Adding to header row for column called ' + key );
+                // Add the key to the array. 
+                keylist.push(key);  
+            
+                // Now add to the header row.
                 header_row_str += '<th>' + key + '</th>';
 
-                // Reset the string going into the row.
-                // TODO: THis needs to loop correctly over all rows 
-                row_str = '<tr>'; 
-
-                // Now loop over every value. 
-                $.each(value , function(){
-                    itemlength += 1;
-                });
-
-                // Add the row length to the shape array. 
-                arraydims.push(itemlength);
             });
+
+            // Add the Header row.
             header_row_str += '</tr>';
             $('#table').append(header_row_str);
 
-            window.console && console.log( 'It has ' + columncount + ' columns.' );
-            window.console && console.log( 'The last column had ' + itemlength + ' entries.' );
-            window.console && console.log( 'The dimensions are ' + arraydims.toString() );
+            // Now, find indices by searching the first column.
+            $.each(jsondata[keylist[0]] ,function(key, value){
 
-            //var tabledata = jQuery.makeArray(jsondata);
+                // Add the key to the array of indices. 
+                indexlist.push(key);  });
 
-            //window.console && console.log( 'I transformed it into an array, which looks like: ' + tabledata.toString() );
+            // Report out the columns and indices. 
+            window.console && console.log( 'Keys are ' + JSON.stringify(keylist) );
+            window.console && console.log( 'Indices are ' + JSON.stringify(indexlist) );
+            window.console && console.log( 'It has ' + keylist.length + ' columns' + ' and ' + indexlist.length + ' indices.');
+
+            // Now you build the table.
+            // And the empty string. 
+            var row_str = '';
             
-            // ITERATING THROUGH OBJECTS
-            // TODO: This does not yet correctly loop throuhg objects - it loops over each column, not each row. 
-            var recipe_row_string = '';
-            var length_test = -1
-            var counter = 0;
+            // Now loop over the indices.
+            $.each(indexlist ,function(indexkey , indexval){
 
-            // This flag is set to FALSE if there is any fatal error requiring a halt to the table build.
-            var continuer = true;
-            
-            // This executes the loop function.
-            $.each(jsondata, function (key, rowdata) {
+                // Initialize the row with the index value. 
+                row_str += '<tr><td>' + indexval + '</td>';
                 
-                
-                if (continuer == true){
-                    //INSERTING ROWS INTO TABLE 
-                    window.console && console.log('Adding ' + recipe_row_string + ' to table.');
-                    $('#table').append(recipe_row_string);
+                // Now loop over all columns.
+                $.each(keylist, function(columnkey, columnval){
                     
-                    } else {
-                        $('#table').remove;
-                        window.console && console.log('Table removed due to mismatch in column lengths. Check your table import is correctly formatted.');
-                        return false;
-                    }
-                counter= counter+1
+                    row_str += '<td>';
+                    row_str += jsondata[columnval][indexval];
+                    row_str += '</td>';
+                    
+                });
                 
+                row_str += '</tr>';
+                
+                window.console && console.log( 'Adding data for index ' + indexval );
+                // Add the  row at the end of the table.
+                $('#table').append(row_str);
+            
             });
-                
-        });
-             
-                
+
+            window.console && console.log( 'I added all the data. Now adding the addRow function.' );
+            row_str = '<tr  id ="addrow_row"><td>';
+            
+            row_str += '<a href="#" onclick="addRow(keylist)">Add</a>';
+            row_str += '</td></tr>';
+
+            window.console && console.log( 'I defined the string containing the AddRow function.' );
+            // Add the  row at the end of the table.
+            $('#table').append(row_str);
+            window.console && console.log( 'I appended the row : ' + row_str );
         
-                        
-                   
+        window.console && console.log( 'End of Jquery ready function.' );
+        
+        // This defines the number of new added rows.
+        counter = 0;
+        });
+   
+        window.console && console.log( 'Defining the addRow function.' );
+        function addRow() {
+            
+            // Set max number of rows you can add.
+            var max = 5;
+        
+            // Max out the number of rows you can add.
+            if (counter < max) {
+                window.console && console.log('Trying to add new row. This is row #'+counter+ ' being added.');
+
+                // Create the new row.
+                var newrow = '<tr id="row-' + counter +'">';
+                 // Now loop over all columns.
+                 $.each(keylist, function(columnkey, columnval){
+                    
+                    newrow += '<td><input type="text" name="' + columnval +'-'+ counter + '"></td>';
+                    
+                });
+            
+                newrow += '</tr>';
+                window.console && console.log('Added row defined as: '+newrow);
+                // And appends it to the last element in the form. 
+                $( '#addrow_row' ).before( newrow) ;
+
+                window.console && console.log('New row added. Adding delete function reference.');
+
+                // This now adds the delete function reference in the last cell. 
+                deletefunction='<td><a href="#" onclick="deleterow(\'row-' + counter + '\')">Delete</a></td>' 
+                $('#row-' + counter ).append(deletefunction)
+
+                window.console && console.log('Added delete function reference.');
+
+            // If you exceed the maximum number of allowed rows. 
+            } else {
+                window.console && console.log('Trying to add too many rows.');
+                $('#alertbar').append("You can only add " + max + ' rows.')
+            };
+
+            counter = counter + 1;
+
+            return false;
+        }
+
+        // This function takes an id, deletes the element, and then deducts the counter. 
+        function deleterow(id){
+            $('#'+id).remove();
+            counter = counter -1 ;
+
+        }
 
     </script>
 
