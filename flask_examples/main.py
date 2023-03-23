@@ -76,6 +76,27 @@ def jquery_crud():
     absolute_path = os.path.dirname(__file__)
     file_path = os.path.join(absolute_path,"static/recipes.csv")
     tabular_df = pd.read_csv(file_path)
+
+    # When passing as a pandas dataframe, it is important to set the index correctly. 
+    # Because the JSON will be structured where every element in every column is labeled by index. 
+    tabular_df.set_index("record_id",inplace=True   )
+
+    # You should also rename the columns here, it is easier than in JavaScript.
+    # This example shows how to do so. 
+    # For more detailed tables, I would recommend you put this mapping dictionary into a separate JSON file. 
+    tabular_df.rename(inplace=True,columns={"recipe_title":"Title",
+                                            "recipe_description": "Description",
+                                            "recipe_author": "Author",
+                                            "recipe_category":"Category",
+                                            "recipe_cuisine":"Cuisine",
+                                            "serving_size":"Serving Size",
+                                            "cook_time":"Cook Time",
+                                            "prep_time":"Preparation Time",
+                                            "recipe_note":"Notes",
+                                            "recipe_tags": "Tags",
+                                            "recipe_ingredients":"Ingredients",
+                                            "recipe_directions":"Directions" })
+
     tabular_json = tabular_df.to_json()
 
     # Serialize into JSON.

@@ -18,23 +18,8 @@
 
     <!-- TABLE CONSTRUCTION-->
     <table id='table'>
-        <!-- HEADING FORMATION -->
-        <tr>
-            <th>Record ID</th>
-            <th>Recipe Title</th>
-            <th>Description</th>
-            <th>Author</th>
-            <th>Category</th>
-            <th>Cuisine</th>
-            <th>Serving Size</th>
-            <th>Cook Time</th>
-            <th>Prep Time</th>
-            <th>Notes</th>
-            <th>Tags</th>
-            <th>Ingredients</th>
-            <th>Directions</th>
-            
-        </tr>
+            <!-- HEADING FORMATION -->
+        
 
     </table>
         
@@ -55,6 +40,14 @@
             var itemlength = -1;
             var arraydims = Array();
 
+            // Initialize the header row and how it will appear. It starts with a first element of Index.
+            // THis index was defined in your pandas dataframe in main.py
+            var header_row_str='<tr><th>Index</th>';
+
+            // And the empty string and array containing the Row data. 
+            var row_str = '';
+            var row_array = [];
+
             // This code documents the shape of your array. 
             // TODO: Add this function to a separate package of useful JS functions
             $.each(jsondata ,function(key, value){
@@ -65,7 +58,14 @@
                 // Reset the counter for the number of rows.
                 itemlength = 0;
 
-                // Now count over every value. 
+                window.console && console.log('Adding to header row for column called ' + key );
+                header_row_str += '<th>' + key + '</th>';
+
+                // Reset the string going into the row.
+                // TODO: THis needs to loop correctly over all rows 
+                row_str = '<tr>'; 
+
+                // Now loop over every value. 
                 $.each(value , function(){
                     itemlength += 1;
                 });
@@ -73,6 +73,8 @@
                 // Add the row length to the shape array. 
                 arraydims.push(itemlength);
             });
+            header_row_str += '</tr>';
+            $('#table').append(header_row_str);
 
             window.console && console.log( 'It has ' + columncount + ' columns.' );
             window.console && console.log( 'The last column had ' + itemlength + ' entries.' );
@@ -95,7 +97,6 @@
             $.each(jsondata, function (key, rowdata) {
                 
                 
-
                 if (continuer == true){
                     //INSERTING ROWS INTO TABLE 
                     window.console && console.log('Adding ' + recipe_row_string + ' to table.');
